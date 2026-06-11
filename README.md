@@ -28,7 +28,7 @@
   <a href="https://huggingface.co/haoz19"><img alt="Hugging Face Models" src="https://img.shields.io/badge/Hugging%20Face-Model-FFD21E?style=for-the-badge&logo=huggingface&logoColor=white"></a>
   <a href="https://huggingface.co/spaces/haoz19/world-tracing-demo"><img alt="Hugging Face Demo" src="https://img.shields.io/badge/Hugging%20Face-Demo-9333EA?style=for-the-badge&logo=huggingface&logoColor=white"></a>
   <a href="https://haoz19.github.io/world-tracing-page/"><img alt="Project Website" src="https://img.shields.io/badge/Project-Website-2563EB?style=for-the-badge&logo=githubpages&logoColor=white"></a>
-  <a href="./LICENSE"><img alt="License MIT" src="https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge&logo=opensourceinitiative&logoColor=white"></a>
+  <a href="./LICENSE"><img alt="License CC BY-NC-ND 4.0" src="https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-22C55E?style=for-the-badge&logo=creativecommons&logoColor=white"></a>
 </p>
 
 </div>
@@ -344,7 +344,11 @@ smaller resolution.
 
 ## License
 
-MIT — see ``LICENSE``.
+[CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+(Creative Commons Attribution-NonCommercial-NoDerivatives 4.0
+International) — see ``LICENSE``. The code, model weights, and demo are
+released for non-commercial research use only; no derivatives may be
+redistributed.
 
 ## Acknowledgements
 
