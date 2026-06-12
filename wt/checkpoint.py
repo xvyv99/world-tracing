@@ -5,6 +5,8 @@ The release ships three model configs:
 * ``r75b`` -- :class:`MultilayerXYZModel` for static objects (1.7B params,
   ``image_size=504``).
 * ``r69e`` -- multilayer-geometry scene model (1.5B params, ``image_size=504``).
+* ``r69l`` -- 840x840 scene model (same 1.5B architecture as ``r69e``,
+  fine-tuned at ``image_size=840``).
 * ``r76``  -- dynamic-object video model with temporal attention (2.1B
   params, ``image_size=336``).
 
@@ -43,6 +45,14 @@ HF_REPOS = {
     "r75b": "haoz19/object-model-6layer",
     "r69e": "haoz19/scene-model-6layer",
     "r69g": "haoz19/scene-model-6layer",
+    # Mix-training scene model (r69g_v2_lance_mix = r69e + 12-dataset Lance
+    # corpus). PRIVATE/gated repo: downloading needs an HF token with access
+    # (the demo Space uses the owner's HF_TOKEN secret + an allowlist gate).
+    "r69g_mix": "haoz19/scene-model-6layer-mix",
+    # 840x840 scene model (r69l_v2_evermotion_ithappy_840_opp): same
+    # architecture as r69e/r69g, warm-resumed from r69e@504 and fine-tuned
+    # at image_size=840 (60x60 patches per layer).
+    "r69l": "haoz19/scene-model-6layer-840",
     "r76":  "haoz19/dynamic-model-16frame",
 }
 """Map model config name → public Hugging Face repository.
@@ -203,6 +213,38 @@ CONFIGS = {
         # (per-batch global rescale instead of per-sample median_log).
         "model_kwargs": _R69E_KWARGS,
         "image_size": 504,
+        "inference_kwargs": dict(
+            num_steps=20,
+            xyz_norm_mode="median_log_global",
+            output_mode="xyz",
+            model_task="split_token",
+            depth_only=True,
+        ),
+    },
+    "r69g_mix": {
+        # Identical architecture + inference recipe to r69g; the only delta
+        # is the checkpoint (trained on dojo + 12-dataset Lance mix). Kept as
+        # a distinct config name so the demo can load both scene models side
+        # by side and gate this one behind HF-login approval.
+        "model_kwargs": _R69E_KWARGS,
+        "image_size": 504,
+        "inference_kwargs": dict(
+            num_steps=20,
+            xyz_norm_mode="median_log_global",
+            output_mode="xyz",
+            model_task="split_token",
+            depth_only=True,
+        ),
+    },
+    "r69l": {
+        # Same architecture as r69e/r69g, but the checkpoint
+        # (r69l_v2_evermotion_ithappy_840_opp) was warm-resumed from
+        # r69e@504 and fine-tuned at **image_size=840** (60x60 patches per
+        # layer). It MUST run at 840: feeding 504 inputs collapses each
+        # 14x14 patch to a near-constant depth (severe OOD on the decoder's
+        # RoPE / FRG attention) and the output reads as coarse voxel blocks.
+        "model_kwargs": _R69E_KWARGS,
+        "image_size": 840,
         "inference_kwargs": dict(
             num_steps=20,
             xyz_norm_mode="median_log_global",
