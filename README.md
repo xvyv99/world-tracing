@@ -66,13 +66,25 @@ This is the inference-only release.
 
 ## Released checkpoints
 
-All three checkpoints are hosted on **Hugging Face Hub**:
+The released checkpoints are hosted on **Hugging Face Hub**:
 
 | config name | task | image size | params | Hugging Face repo |
 | --- | --- | --- | --- | --- |
 | `r75b` | object | 504 × 504 | 1.7 B | [`haoz19/object-model-6layer`](https://huggingface.co/haoz19/object-model-6layer) |
 | `r69e` | scene | 504 × 504 | 1.5 B | [`haoz19/scene-model-6layer`](https://huggingface.co/haoz19/scene-model-6layer) |
+| `r69l` | scene (high-res) | 840 × 840 | 1.5 B | [`haoz19/scene-model-6layer-840`](https://huggingface.co/haoz19/scene-model-6layer-840) |
 | `r76`  | dynamic object (16 frames) | 336 × 336 | 2.1 B | [`haoz19/dynamic-model-16frame`](https://huggingface.co/haoz19/dynamic-model-16frame) |
+
+> **Checkpoint update — 2026-06-13:** the high-resolution scene model
+> `r69l` (config `r69l`, repo
+> [`haoz19/scene-model-6layer-840`](https://huggingface.co/haoz19/scene-model-6layer-840))
+> was refreshed to the latest `r69l_v2_evermotion_ithappy_840_opp` weights
+> (iter 50 000). This is the same checkpoint that now powers the Scene tab of
+> the [interactive demo](https://huggingface.co/spaces/haoz19/world-tracing-demo).
+> `r69l` is the warm-resumed, 840 × 840 fine-tune of the 504-res `r69e`
+> scene model — it must be run at 840 (the `r69l` config in
+> `wt/checkpoint.py` handles this); feeding it 504-res inputs is heavily
+> out-of-distribution.
 
 Pass `--ckpt <config-name>` (e.g. `--ckpt r75b`) and `wt` will fetch the
 weights from the Hub on first use and cache them under
